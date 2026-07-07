@@ -3,10 +3,10 @@ import { createClient } from '@supabase/supabase-js'
 
 const router = express.Router()
 
-// Supabase client — REPLACE THESE TWO VALUES
+// Supabase client — REAL VALUES, NO PLACEHOLDERS
 const supabase = createClient(
-  'https://YOUR_PROJECT_ID.supabase.co',
-  'YOUR_SERVICE_ROLE_KEY'
+  'https://qyumplqtxdbidwrypmcn.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dW1wbHF0eGRiaWR3cnlwbWNuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzEwNDMxMCwiZXhwIjoyMDk4NjgwMzEwfQ.c9QaeMZxO0o8JipfBsjmOl474phEHY2WSSOMebsnNPw'
 )
 
 // Auto-insert Fallen from Sequence metadata
@@ -19,7 +19,6 @@ router.post('/list', async (req, res) => {
       ownerWallet
     } = req.body
 
-    // Extract fields from attributes
     let race = null
     let gender = null
     let level = null
@@ -39,12 +38,10 @@ router.post('/list', async (req, res) => {
       }
     }
 
-    // Basic validation
     if (!race || !gender || !level || !tokenId || !ownerWallet) {
       return res.status(400).json({ error: 'Missing required Fallen fields' })
     }
 
-    // Insert into Supabase
     const { data, error } = await supabase
       .from('fallens')
       .insert({
