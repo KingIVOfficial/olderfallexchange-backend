@@ -10,7 +10,6 @@ app.get("/health", (req, res) => {
   res.json({ ok: true });
 });
 
-// Connect the Fallen route
 app.use("/api/fallen", fallenRoutes);
 
 app.listen(3000, () => {
