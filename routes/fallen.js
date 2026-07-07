@@ -71,3 +71,13 @@ router.post('/list', async (req, res) => {
 })
 
 export default router
+import { getWalletItems } from "../services/sequenceWallet.js";
+
+router.get("/debug/wallet/:address", async (req, res) => {
+  try {
+    const items = await getWalletItems(req.params.address);
+    res.json({ items });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
