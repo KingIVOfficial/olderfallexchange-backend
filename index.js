@@ -1,20 +1,21 @@
-import express from "express";
-import cors from "cors";
+import express from 'express'
+import fallenRoutes from './routes/fallen.js'
+import tradingPostRoutes from './routes/tradingpost.js'
 
-import fallenRoutes from "./routes/fallen.js";
-import tradingRoutes from "./routes/tradingpost.js";
+const app = express()
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(express.json())
 
-app.get("/health", (req, res) => {
-  res.json({ ok: true });
-});
+// ROUTES
+app.use('/api/fallen', fallenRoutes)
+app.use('/api/tradingpost', tradingPostRoutes)
 
-app.use("/api/fallen", fallenRoutes);
-app.use("/api/trading", tradingRoutes);
+// HEALTH CHECK
+app.get('/', (req, res) => {
+  res.send('OlderfallExchange backend is running')
+})
 
-app.listen(3000, () => {
-  console.log("Backend running on port 3000");
-});
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
