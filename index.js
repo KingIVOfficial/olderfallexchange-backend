@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
+
 import fallenRoutes from "./routes/fallen.js";
+import tradingRoutes from "./routes/tradingpost.js";
 
 const app = express();
 app.use(cors());
@@ -11,6 +13,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api/fallen", fallenRoutes);
+app.use("/api/trading", tradingRoutes);
 
 app.listen(3000, () => {
   console.log("Backend running on port 3000");
