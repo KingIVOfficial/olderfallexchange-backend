@@ -1,9 +1,6 @@
-import { SequenceClient } from '@0xsequence/sdk';
+import { SequenceAPIClient } from '@0xsequence/api'
 
-const sequenceClient = new SequenceClient({
-  network: 'polygon',
+export const sequence = new SequenceAPIClient({
   projectAccessKey: process.env.SEQUENCE_PROJECT_ACCESS_KEY,
-  walletConnectProjectId: process.env.SEQUENCE_WALLET_CONNECT_PROJECT_ID
-});
-
-export default sequenceClient;
+  projectId: process.env.SEQUENCE_PROJECT_ID
+})
