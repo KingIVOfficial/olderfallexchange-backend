@@ -1,9 +1,10 @@
 import express from 'express'
 import { createClient } from '@supabase/supabase-js'
+import { getWalletItems } from "../services/sequenceWallet.js"
 
 const router = express.Router()
 
-// Supabase client — REAL VALUES, NO PLACEHOLDERS
+// Supabase client — REAL VALUES
 const supabase = createClient(
   'https://qyumplqtxdbidwrypmcn.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dW1wbHF0eGRiaWR3cnlwbWNuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzEwNDMxMCwiZXhwIjoyMDk4NjgwMzEwfQ.c9QaeMZxO0o8JipfBsjmOl474phEHY2WSSOMebsnNPw'
@@ -70,14 +71,14 @@ router.post('/list', async (req, res) => {
   }
 })
 
-export default router
-import { getWalletItems } from "../services/sequenceWallet.js";
-
+// ⭐ DEBUG WALLET ROUTE
 router.get("/debug/wallet/:address", async (req, res) => {
   try {
-    const items = await getWalletItems(req.params.address);
-    res.json({ items });
+    const items = await getWalletItems(req.params.address)
+    res.json({ items })
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ error: e.message })
   }
-});
+})
+
+export default router
