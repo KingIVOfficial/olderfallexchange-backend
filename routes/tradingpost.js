@@ -8,9 +8,7 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dW1wbHF0eGRiaWR3cnlwbWNuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzEwNDMxMCwiZXhwIjoyMDk4NjgwMzEwfQ.c9QaeMZxO0o8JipfBsjmOl474phEHY2WSSOMebsnNPw'
 )
 
-/* ---------------------------
-   CREATE LISTING
----------------------------- */
+/* CREATE LISTING */
 router.post('/list', async (req, res) => {
   const { item_type, item_id, owner_wallet, seeking } = req.body
 
@@ -19,7 +17,7 @@ router.post('/list', async (req, res) => {
   }
 
   const { data, error } = await supabase
-    .from('listings')
+    .from('trading_listings')
     .insert({
       item_type,
       item_id,
@@ -33,12 +31,10 @@ router.post('/list', async (req, res) => {
   return res.json({ listing: data })
 })
 
-/* ---------------------------
-   GET ALL ACTIVE LISTINGS
----------------------------- */
+/* GET ALL ACTIVE LISTINGS */
 router.get('/listings', async (req, res) => {
   const { data, error } = await supabase
-    .from('listings')
+    .from('trading_listings')
     .select('*')
     .eq('status', 'active')
 
@@ -46,9 +42,7 @@ router.get('/listings', async (req, res) => {
   return res.json({ listings: data })
 })
 
-/* ---------------------------
-   MAKE AN OFFER
----------------------------- */
+/* MAKE AN OFFER */
 router.post('/offer', async (req, res) => {
   const { listing_id, offerer_wallet, offered_items } = req.body
 
@@ -57,7 +51,7 @@ router.post('/offer', async (req, res) => {
   }
 
   const { data, error } = await supabase
-    .from('offers')
+    .from('trading_offers')
     .insert({
       listing_id,
       offerer_wallet,
@@ -70,16 +64,14 @@ router.post('/offer', async (req, res) => {
   return res.json({ offer: data })
 })
 
-/* ---------------------------
-   ACCEPT OFFER
----------------------------- */
+/* ACCEPT OFFER */
 router.post('/accept', async (req, res) => {
   const { offer_id } = req.body
 
   if (!offer_id) return res.status(400).json({ error: 'Missing offer_id' })
 
   const { error } = await supabase
-    .from('offers')
+    .from('trading_offers')
     .update({ status: 'accepted' })
     .eq('id', offer_id)
 
@@ -87,16 +79,14 @@ router.post('/accept', async (req, res) => {
   return res.json({ success: true })
 })
 
-/* ---------------------------
-   DECLINE OFFER
----------------------------- */
+/* DECLINE OFFER */
 router.post('/decline', async (req, res) => {
   const { offer_id } = req.body
 
   if (!offer_id) return res.status(400).json({ error: 'Missing offer_id' })
 
   const { error } = await supabase
-    .from('offers')
+    .from('trading_offers')
     .update({ status: 'declined' })
     .eq('id', offer_id)
 
@@ -104,16 +94,14 @@ router.post('/decline', async (req, res) => {
   return res.json({ success: true })
 })
 
-/* ---------------------------
-   CANCEL OFFER
----------------------------- */
+/* CANCEL OFFER */
 router.post('/cancel', async (req, res) => {
   const { offer_id } = req.body
 
   if (!offer_id) return res.status(400).json({ error: 'Missing offer_id' })
 
   const { error } = await supabase
-    .from('offers')
+    .from('trading_offers')
     .update({ status: 'cancelled' })
     .eq('id', offer_id)
 
