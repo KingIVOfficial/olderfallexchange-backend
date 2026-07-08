@@ -1,22 +1,8 @@
-import express from 'express';
-import { getWalletItems } from '../services/sequenceWallet.js';
-
+const express = require('express');
 const router = express.Router();
 
-router.get('/debug/wallet/:walletAddress', async (req, res) => {
-  const { walletAddress } = req.params;
-
-  try {
-    const items = await getWalletItems(walletAddress);
-
-    res.json({
-      wallet: walletAddress,
-      items
-    });
-  } catch (error) {
-    console.error('Error in debug wallet route:', error);
-    res.status(500).json({ error: 'Failed to fetch wallet items' });
-  }
+router.get('/', (req, res) => {
+  res.json({ route: "fallen", status: "ok" });
 });
 
-export default router;
+module.exports = router;
