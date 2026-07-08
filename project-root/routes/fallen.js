@@ -1,8 +1,24 @@
-const express = require('express');
-const router = express.Router();
+import express from "express";
+import cors from "cors";
+import walletInventory from "./routes/walletInventory.js";
 
-router.get('/', (req, res) => {
-  res.json({ route: "fallen", status: "ok" });
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// HEALTH CHECK
+app.get("/", (req, res) => {
+  res.json({ status: "Olderfall backend running" });
 });
 
-module.exports = router;
+// WALLET ROUTES
+app.use("/wallet", walletInventory);
+
+// SERVER LISTEN (Render uses PORT env)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Olderfall backend running on port ${PORT}`);
+});
+
+export default app;
