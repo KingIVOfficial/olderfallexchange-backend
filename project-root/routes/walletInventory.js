@@ -1,11 +1,11 @@
 import express from "express";
-import { sequence } from "../services/sequenceWallet.js";  // uses your existing Sequence config
+import { sequence } from "../services/sequenceWallet.js";
 
 const router = express.Router();
 
 /**
  * GET /wallet/inventory/:address
- * Returns all items (Fallens, Armor, Weapons, Boosters) for a wallet across all networks.
+ * Returns all items for a wallet across all networks.
  */
 router.get("/inventory/:address", async (req, res) => {
   const address = req.params.address;
@@ -15,10 +15,8 @@ router.get("/inventory/:address", async (req, res) => {
   }
 
   try {
-    // 1. Fetch inventory from Sequence
     const inventory = await sequence.getInventory(address);
 
-    // 2. Normalize items
     const items = inventory.items.map((item) => ({
       contractAddress: item.contractAddress,
       tokenId: item.tokenId,
@@ -29,7 +27,6 @@ router.get("/inventory/:address", async (req, res) => {
       metadata: item.metadata || {},
     }));
 
-    // 3. Return clean inventory
     return res.json({
       wallet: address,
       count: items.length,
