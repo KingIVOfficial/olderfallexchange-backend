@@ -1,11 +1,8 @@
 import express from "express";
-import { sequence } from "../services/sequenceWallet.js";
+import { sequenceClient } from "../services/sequenceWallet.js";
 
 const router = express.Router();
 
-/**
- * GET /wallet/inventory/:address
- */
 router.get("/:address", async (req, res) => {
   const address = req.params.address;
 
@@ -14,7 +11,7 @@ router.get("/:address", async (req, res) => {
   }
 
   try {
-    const inventory = await sequence.getInventory(address);
+    const inventory = await sequenceClient.getInventory(address);
 
     const items = inventory.items.map((item) => ({
       contractAddress: item.contractAddress,
@@ -31,7 +28,6 @@ router.get("/:address", async (req, res) => {
       count: items.length,
       items,
     });
-
   } catch (error) {
     console.error("Inventory Error:", error);
     return res.status(500).json({
