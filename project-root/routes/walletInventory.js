@@ -5,6 +5,7 @@ const router = express.Router();
 
 /**
  * GET /wallet/inventory/:address
+ * Returns all items for a wallet across all networks.
  */
 router.get("/:address", async (req, res) => {
   const address = req.params.address;
